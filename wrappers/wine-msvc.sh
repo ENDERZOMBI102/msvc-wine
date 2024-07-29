@@ -15,8 +15,11 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 MSVCTRICKS_EXE="$(dirname $0)/../msvctricks.exe"
+CMDFILEREMAP_EXE="$(dirname $0)/../cmdfileremap.exe"
 EXE=$1
 shift
+WINE=$(command -v wine64 || command -v wine || false)
+export WINEDEBUG=${WINEDEBUG:-"-all"}
 
 ARGS=()
 for a; do
@@ -47,18 +50,20 @@ for a; do
 		# tool option /h with the value ome/user/file.
 		path=$a
 		;;
+  @*)
+		# Remap command files
+		# This is essential for cmake usage, as often there are too many args for just cli
+		$WINE "$CMDFILEREMAP_EXE" "${a#?}"
+		;;
 	*)
 		;;
 	esac
 	if [ -n "$path" ] && [ -d "$(dirname "$path")" ] && [ "$(dirname "$path")" != "/" ]; then
 		opt=${a%$path}
-		a=${opt}z:$path
+		a="${opt}$(winepath -w $path)"
 	fi
 	ARGS+=("$a")
 done
-
-WINE=$(command -v wine64 || command -v wine || false)
-export WINEDEBUG=${WINEDEBUG:-"-all"}
 
 if [ -n "$WINE_MSVC_RAW_STDOUT" ]; then
 	$WINE "$EXE" "${ARGS[@]}"

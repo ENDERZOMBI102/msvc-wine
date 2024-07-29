@@ -198,5 +198,14 @@ if [ -d "$DEST/bin/$host" ]; then
         else
             echo "Build msvctricks failed."
         fi
+        echo "Build cmdfileremap ..."
+        "$DEST/bin/$host/cl" /EHsc /O2 /D_X86_64_ "$ORIG/cmdfileremap.cpp"
+        if [ $? -eq 0 ]; then
+            mv cmdfileremap.exe bin/
+            rm cmdfileremap.obj
+            echo "Build cmdfileremap done."
+        else
+            echo "Build cmdfileremap failed."
+        fi
     fi
 fi

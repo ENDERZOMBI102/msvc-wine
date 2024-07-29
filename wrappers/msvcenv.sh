@@ -22,7 +22,7 @@ BASE_UNIX=$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)
 if [ ! -d "$BASE_UNIX/vc" ]; then
     BASE_UNIX=$(cd "$BASE_UNIX"/.. && pwd)
 fi
-BASE=z:${BASE_UNIX//\//\\}
+BASE=$(winepath -w $BASE_UNIX)
 MSVCVER=14.13.26128
 SDKVER=10.0.16299.0
 ARCH=x86
@@ -38,5 +38,5 @@ export INCLUDE="$MSVCDIR\\include;$SDKINCLUDE\\shared;$SDKINCLUDE\\ucrt;$SDKINCL
 export LIB="$MSVCDIR\\lib\\$ARCH;$SDKLIB\\ucrt\\$ARCH;$SDKLIB\\um\\$ARCH;$SDKLIB\\km\\$ARCH"
 export LIBPATH="$LIB"
 # "$MSVCDIR\\bin\\Hostx64\\x64" is included in PATH for DLLs.
-export WINEPATH="${BINDIR//\//\\};${SDKBINDIR//\//\\};$MSVCDIR\\bin\\Hostx64\\x64"
+export WINEPATH="$(winepath -w $BINDIR);$(winepath -w $SDKBINDIR);$MSVCDIR\\bin\\Hostx64\\x64"
 export WINEDLLOVERRIDES="vcruntime140=n;vcruntime140_1=n"
