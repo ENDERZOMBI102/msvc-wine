@@ -198,14 +198,14 @@ if [ -d "$DEST/bin/$host" ]; then
         else
             echo "Build msvctricks failed."
         fi
-        echo "Build cmdfileremap ..."
-        "$DEST/bin/$host/cl" /EHsc /O2 /D_X86_64_ "$ORIG/cmdfileremap.cpp"
+        echo "Build cmaketricks ..."
+        "$DEST/bin/$host/cl" /EHsc /O2 /D_X86_64_ "$ORIG/cmaketricks.cpp"
         if [ $? -eq 0 ]; then
-            mv cmdfileremap.exe bin/
-            rm cmdfileremap.obj
-            echo "Build cmdfileremap done."
+            mv cmaketricks.exe bin/
+            rm cmaketricks.obj
+            echo "Build cmaketricks done."
         else
-            echo "Build cmdfileremap failed."
+            echo "Build cmaketricks failed."
         fi
     fi
 fi
